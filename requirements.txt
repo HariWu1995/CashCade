@@ -1,0 +1,4 @@
+tqdm
+imageio
+pygame
+pyautogui
