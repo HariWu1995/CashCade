@@ -11,8 +11,15 @@ from ..config import (
     GAME_BACKGROUND, GAME_TEXT_COLOR,
 )
 
+import os
 
-asset_dir = Path(__file__).resolve().parents[2] / "assets"
+work_dir = os.environ.get('WORKING_DIR', None)
+if work_dir is None:
+    work_dir = Path(__file__).resolve().parents[2]
+else:
+    work_dir = Path(work_dir)
+
+asset_dir = work_dir / "assets"
 
 background_path = asset_dir / "backgrounds/full_background.gif"
 character_path  = asset_dir / "casharacters/magikarp_orange.png"

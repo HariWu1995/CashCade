@@ -2,26 +2,37 @@ import os
 os.environ['SDL_VIDEO_CENTERED'] = '0'
 # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0,0)
 
+from pathlib import Path
+work_dir = Path(__file__).resolve().parent
+work_dir = str(work_dir).replace('\\', '/')
+
+# HACK: hardcode
+if work_dir.endswith('lib/library.zip'):
+    work_dir = work_dir.replace('/lib/library.zip', '')
+os.environ['WORKING_DIR'] = work_dir
+
+
 import sys
 import time
 import traceback
-from pathlib import Path
 
 import random
 import pygame
 import pyautogui
 
-from .ui import draw_block_game, draw_block_menu, draw_block_info
-from .core import Player, Item, Button, ButtonM, GAME_GRID, GAME_STATES
-from .config import WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, FPS, \
-                    LIFETIME, LIFESPEED, STRENGTH, PROPERTY, MOVEMENT, \
-                    FONT_NAME, FONT_SIZE, GRID_ROWS, GRID_COLS, BLACK
+try:
+    from src.ui import draw_block_game, draw_block_menu, draw_block_info
+    from src.core import Player, Item, Button, ButtonM, GAME_GRID, GAME_STATES
+    from src.config import WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, FPS, \
+                            LIFETIME, LIFESPEED, STRENGTH, PROPERTY, MOVEMENT, \
+                            FONT_NAME, FONT_SIZE, GRID_ROWS, GRID_COLS, BLACK
+except Exception:
+    print(traceback.format_exc())
+    _ = input("Press ANY key to continue ... ")
 
 
-asset_dir = Path(__file__).resolve().parents[1] / "assets"
-print(asset_dir)
-_ = input("Press ME")
-
+work_dir = Path(work_dir)
+asset_dir = work_dir / "assets"
 font_dir = asset_dir / "fonts"
 
 player_path = str(asset_dir / "casharacters/magikarp_orange.png")
@@ -307,7 +318,6 @@ def loop(window, fonts, clock):
         playing = False
 
     return
-
 
 
 if __name__ == "__main__":
